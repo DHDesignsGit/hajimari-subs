@@ -1,0 +1,45 @@
+*{
+  --color-1: #663F8C;
+
+  --color-2: #0E0D26;
+
+  --color-3: #F27ED3;
+
+  --color-4: #fff;
+
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-montserrat);
+}
+
+body{
+  background-color: var(--color-1);
+}
+
+h1{
+  font-size: 96px;
+  font-weight: 900;
+}
+h2{
+  font-size: 64px;
+  font-weight: 900;
+}
+h3{
+  font-size: 48px;
+  font-weight: 900;
+}
+p{
+  font-size: 24px;
+  font-weight: 500px;
+}
+b{
+  font-weight: 700px;
+}
+span{
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+label{
+  font-size: 24px;
+}
