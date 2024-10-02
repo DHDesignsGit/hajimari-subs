@@ -1,45 +1,137 @@
-*{
-  --color-1: #663F8C;
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+* {
+  --color-1: #002633;
 
-  --color-2: #0E0D26;
+  --color-2: #EFF4F5;
 
-  --color-3: #F27ED3;
+  --color-3: #001218;
 
-  --color-4: #fff;
+  --color-4: #004A63;
+
+  --color-5: #009ACE;
 
   padding: 0;
   margin: 0;
-  font-family: var(--font-montserrat);
+  font-family: "Montserrat";
+  outline: none;
+  border: none;
 }
 
-body{
+body {
   background-color: var(--color-1);
+  color: var(--color-2);
 }
 
-h1{
+h1 {
+  margin: 16px 0;
   font-size: 96px;
   font-weight: 900;
 }
-h2{
+h2 {
+  margin: 16px 0;
   font-size: 64px;
   font-weight: 900;
 }
-h3{
+h3 {
+  margin: 16px 0;
   font-size: 48px;
   font-weight: 900;
 }
-p{
+p {
   font-size: 24px;
   font-weight: 500px;
 }
-b{
+b {
   font-weight: 700px;
 }
-span{
-  font-size: 24px;
-  font-weight: 700;
+span {
+  font-size: 14px;
+  font-weight: 500;
   text-transform: uppercase;
 }
-label{
-  font-size: 24px;
+label {
+  text-align: left;
+  width: 100%;
+  margin: 0 16px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 14px;
+}
+input,
+button,
+select {
+  margin: 4px 16px 32px;
+  padding: 8px;
+  font-size: 16px;
+  background: color-mix(in srgb, var(--color-3) 50%, transparent);
+  color: var(--color-2);
+  border-radius: 5px;
+}
+button {
+  font-weight: 500;
+  text-transform: uppercase;
+  font-family: var(--font-montserrat);
+  cursor: pointer;
+  border: none;
+}
+
+.radius {
+  border-radius: 5px;
+}
+
+.block {
+  background-color: color-mix(in srgb, var(--color-3), rgb(0, 0, 0, 0.2)) ;
+  backdrop-filter: Blur(20px);
+  padding: 32px;
+  margin: 32px;
+}
+.switch {
+  border-radius: 5px;
+  overflow: hidden;
+}
+.switch button {
+  margin: 0;
+  transition: 400ms;
+  background-color: var(--color-3);
+  border-radius: 0;
+}
+.switch button.active {
+  background-color: var(--color-5);
+  color: var(--color-2);
+}
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* umístí pozadí za obsah */
+  object-fit: cover; /* pokud používáte obrázek jako pozadí */
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px var(--color-3) inset !important;
+  box-shadow: 0 0 0px 1000px var(--color-3) inset !important;
+  -webkit-text-fill-color: var(--color-3) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Stylování posuvníku (thumb) */
+::-webkit-scrollbar-thumb {
+  background: var(--quaternary-color);
+  border-radius: 10px;
+}
+
+/* Stylování trati (track) */
+::-webkit-scrollbar-track {
+  background: var(--primary-color);
+  border-radius: 10px;
+}
+.submit{
+  margin: 16px;
 }

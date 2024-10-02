@@ -8,34 +8,70 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const validatePassword = (password) => {
+    return password.length >= 8;
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
+    setError('');
+
+
+    if (!validateEmail(email)) {
+      const errorMessage = 'Zadejte platnou emailovou adresu.';
+      setError(errorMessage);
+      return;
+    }
+    if (!validatePassword(password)) {
+      const errorMessage = 'Heslo musí mít alespoň 8 znaků.';
+      setError(errorMessage);
+      return;
+    }
+
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      alert('Registrace byla úspěšná');
     } catch (error) {
-      setError(error.number);
+      handleError(error.code);
     }
+  };
+
+  const handleError = (errorCode) => {
+    let errorMessage;
+    switch (errorCode) {
+      case 'auth/email-already-in-use':
+        errorMessage = 'Tento email je již registrován.';
+        break;
+      case 'auth/operation-not-allowed':
+        errorMessage = 'Registrace je momentálně nedostupná.';
+        break;
+      default:
+        errorMessage = 'Nastala chyba. Zkuste to prosím znovu.';
+    }
+    setError(errorMessage);
   };
 
   return (
     <div>
-      <h2>Registrace</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleRegister}>
+      <form className="auth-form" onSubmit={handleRegister} noValidate>
+        <label>email</label>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
         />
+        <label>heslo</label>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Heslo"
         />
-        <button type="submit">Zaregistrovat se</button>
+        {error && <span style={{ color: 'red' }}>{error}</span>}
+        <button className="submit" type="submit">Zaregistrovat se</button>
       </form>
     </div>
   );

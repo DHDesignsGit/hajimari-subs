@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getDatabase } from "firebase/database"; // Opravený import
 
 const firebaseConfig = {
   apiKey: "AIzaSyD08ESF7ryo8o_gBv2A5YlnKod7PkKz-xM",
@@ -14,5 +15,6 @@ const firebaseConfig = {
 // Inicializace Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getDatabase(app); // Opravené: změněno na getDatabase
 
-export { auth };
+export { auth, db };
