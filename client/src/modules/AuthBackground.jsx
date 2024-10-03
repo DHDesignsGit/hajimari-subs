@@ -4,75 +4,77 @@ import { Outlet } from "react-router-dom";
 
 const TWO_PI = Math.PI * 2;
 
-class Circle {
-  constructor(x, y, baseRadius, bounceRadius, angleCircle) {
-    this.basePosition = { x, y };
+class Petal {
+  constructor(x, y, size) {
     this.position = { x, y };
-    this.speed = 0.01;
-    this.baseSize = 10;
-    this.size = 10;
-    this.angle = x + y;
-    this.baseRadius = baseRadius;
-    this.bounceRadius = bounceRadius;
-    this.angleCircle = angleCircle;
+    this.size = size;
+    this.angle = Math.random() * TWO_PI;
+    this.speed = Math.random() * 1 + 0.5; // Random speed
+    this.windEffect = (Math.random() * 0.7 - 0.25); // Random wind effect
+    this.rotation = Math.random() * TWO_PI;
+    this.rotationSpeed = Math.random() * 0.02 - 0.01; // Rotation speed
   }
 
   update() {
-    this.position.x =
-      this.basePosition.x +
-      Math.cos(this.angleCircle) *
-        (Math.sin(this.angle + this.angleCircle) * this.bounceRadius +
-          this.baseRadius);
-    this.position.y =
-      this.basePosition.y +
-      Math.sin(this.angleCircle) *
-        (Math.sin(this.angle + this.angleCircle) * this.bounceRadius +
-          this.baseRadius);
-    this.size = Math.cos(this.angle) * 8 + this.baseSize;
+    // Update position with wind effect and speed
+    this.position.y += this.speed;
+    this.position.x += this.windEffect;
 
-    this.angle += this.speed;
+    // Rotate the petal
+    this.rotation += this.rotationSpeed;
+
+    // Reset position if the petal falls out of view
+    if (this.position.y > window.innerHeight) {
+      this.position.y = -this.size; // Reset to the top
+      this.position.x = Math.random() * window.innerWidth; // Random x position
+    }
   }
 
   render(context) {
-    context.fillStyle = `hsl(195, 100%, ${this.size * 4}%)`;
+    context.save();
+    context.translate(this.position.x, this.position.y);
+    context.rotate(this.rotation);
+    context.fillStyle = "rgba(255, 182, 193, 0.8)";
     context.beginPath();
-    context.arc(this.position.x, this.position.y, this.size, 0, TWO_PI);
+    context.moveTo(0, -this.size);
+    context.quadraticCurveTo(this.size / 2, -this.size / 2, 0, 0);
+    context.quadraticCurveTo(-this.size / 2, -this.size / 2, 0, -this.size);
     context.fill();
+    context.restore();
   }
 }
 
-class CircleContainer {
-  constructor(context, x, y) {
+class PetalContainer {
+  constructor(context, petalCount) {
     this.context = context;
-    this.position = { x, y };
-    this.numberOfCircles = 19;
-    this.circles = [];
-    this.baseRadius = 20;
-    this.bounceRadius = 150;
-    this.singleSlice = TWO_PI / this.numberOfCircles;
-    this.initializeCircles();
+    this.petalCount = petalCount; // Number of petals
+    this.petals = [];
+    this.initializePetals();
   }
 
-  initializeCircles() {
-    for (let i = 0; i < this.numberOfCircles; i++) {
-      this.circles.push(
-        new Circle(
-          this.position.x,
-          this.position.y + Math.random(),
-          this.baseRadius,
-          this.bounceRadius,
-          i * this.singleSlice
-        )
-      );
+  initializePetals() {
+    for (let i = 0; i < this.petalCount; i++) {
+      const x = Math.random() * window.innerWidth;
+      const y = Math.random() * window.innerHeight;
+      const size = Math.random() * 15 + 5; // Size range from 5 to 15
+      this.petals.push(new Petal(x, y, size));
     }
   }
 
   update() {
-    this.circles.forEach((circle) => circle.update());
+    this.petals.forEach((petal) => petal.update());
   }
 
   render() {
-    this.circles.forEach((circle) => circle.render(this.context));
+    this.petals.forEach((petal) => petal.render(this.context));
+  }
+
+  resize() {
+    // When the canvas resizes, reset petal positions
+    this.petals.forEach((petal) => {
+      petal.position.x = Math.random() * window.innerWidth;
+      petal.position.y = Math.random() * window.innerHeight;
+    });
   }
 }
 
@@ -95,33 +97,27 @@ const CanvasAnimation = () => {
     width: window.innerWidth,
     height: window.innerHeight,
   });
+  const [petalContainer, setPetalContainer] = useState(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
-    let { width, height } = dimensions;
-    canvas.width = width;
-    canvas.height = height;
+    
+    // Set canvas dimensions
+    canvas.width = dimensions.width;
+    canvas.height = dimensions.height;
 
-    const circleContainers = [];
-
-    const initializeCircleContainers = () => {
-      circleContainers.length = 0;
-      for (let x = 0; x < width + 100; x += 100) {
-        for (let y = 0; y < height + 100; y += 100) {
-          let circleContainer = new CircleContainer(context, x, y);
-          circleContainers.push(circleContainer);
-        }
-      }
-    };
+    // Create the petal container
+    const newPetalContainer = new PetalContainer(context, 500);
+    setPetalContainer(newPetalContainer);
 
     const update = () => {
-      circleContainers.forEach((container) => container.update());
+      newPetalContainer.update();
     };
 
     const render = () => {
-      context.clearRect(0, 0, width, height);
-      circleContainers.forEach((container) => container.render());
+      context.clearRect(0, 0, dimensions.width, dimensions.height);
+      newPetalContainer.render();
     };
 
     const loop = () => {
@@ -130,13 +126,12 @@ const CanvasAnimation = () => {
       requestRef.current = requestAnimationFrame(loop);
     };
 
-    initializeCircleContainers();
     loop();
 
     return () => {
       cancelAnimationFrame(requestRef.current);
     };
-  }, [dimensions]);
+  }, [dimensions]); // Update only on dimensions changes
 
   useEffect(() => {
     const handleResize = debounce(() => {
@@ -144,6 +139,11 @@ const CanvasAnimation = () => {
       const newHeight = window.innerHeight;
       if (newWidth !== dimensions.width || newHeight !== dimensions.height) {
         setDimensions({ width: newWidth, height: newHeight });
+
+        // Update canvas size and petal positions
+        if (petalContainer) {
+          petalContainer.resize();
+        }
       }
     }, 150);
 
@@ -151,34 +151,15 @@ const CanvasAnimation = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [dimensions]);
+  }, [dimensions, petalContainer]);
 
   return (
     <>
       <Outlet />
       <div className="background">
-      <canvas ref={canvasRef} id="canvas">
-        Your browser doesn't support canvas
-      </canvas>
-      <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-        <defs>
-          <filter id="shadowed-goo">
-            <feGaussianBlur
-              in="SourceGraphic"
-              result="blur"
-              stdDeviation="10"
-            />
-            <feColorMatrix
-              in="blur"
-              mode="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
-              result="goo"
-            />
-            <feBlend in="SourceGraphic" in2="goo" mode="normal" result="mix" />
-            <feDropShadow dx="1" dy="1" stdDeviation="3" floodColor="black" />
-          </filter>
-        </defs>
-      </svg>
+        <canvas ref={canvasRef} id="canvas">
+          Your browser doesn't support canvas
+        </canvas>
       </div>
     </>
   );

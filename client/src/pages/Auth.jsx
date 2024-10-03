@@ -5,6 +5,7 @@ import { auth } from "../Firebase"; // Import your firebase config
 import Login from "../modules/Login";
 import Register from "../modules/Register";
 import "../styles/auth.css"; // Opravený název složky
+import logo from "../media/logo-hajimari-subs.svg"
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -22,7 +23,7 @@ const Auth = () => {
 
   return (
     <div className="auth-body">
-      <h1 className="auth-title">HajimariSubs</h1>
+      <img className="auth-logo" src={logo} alt="" />
       <div className="auth-container block radius">
         <div className="switch">
           <button

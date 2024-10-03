@@ -18,8 +18,12 @@
 }
 
 body {
-  background-color: var(--color-1);
+  height: 100dvh;
   color: var(--color-2);
+  background-image: url("./media/background.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 h1 {
@@ -134,4 +138,9 @@ input:-webkit-autofill:active {
 }
 .submit{
   margin: 16px;
+}
+.background {
+  width: 100%; /* Adjust as needed */
+  height: 100vh; /* Full height of the viewport */
+  overflow: hidden; /* Hide any overflow */
 }
