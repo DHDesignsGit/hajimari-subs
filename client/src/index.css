@@ -24,28 +24,28 @@ body {
 
 h1 {
   margin: 16px 0;
-  font-size: 96px;
+  font-size: 64px;
   font-weight: 900;
 }
 h2 {
   margin: 16px 0;
-  font-size: 64px;
+  font-size: 48px;
   font-weight: 900;
 }
 h3 {
   margin: 16px 0;
-  font-size: 48px;
+  font-size: 36px;
   font-weight: 900;
 }
 p {
-  font-size: 24px;
+  font-size: 12px;
   font-weight: 500px;
 }
 b {
   font-weight: 700px;
 }
 span {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   text-transform: uppercase;
 }
@@ -55,20 +55,20 @@ label {
   margin: 0 16px;
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 12px;
 }
 input,
 button,
 select {
   margin: 4px 16px 32px;
   padding: 8px;
-  font-size: 16px;
+  font-size: 12px;
   background: color-mix(in srgb, var(--color-3) 50%, transparent);
   color: var(--color-2);
   border-radius: 5px;
+  font-weight: bold;
 }
 button {
-  font-weight: 500;
   text-transform: uppercase;
   font-family: var(--font-montserrat);
   cursor: pointer;
@@ -114,7 +114,7 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0px 1000px var(--color-3) inset !important;
   box-shadow: 0 0 0px 1000px var(--color-3) inset !important;
-  -webkit-text-fill-color: var(--color-3) !important;
+  -webkit-text-fill-color: var(--color-2) !important;
   transition: background-color 5000s ease-in-out 0s;
 }
 ::-webkit-scrollbar {

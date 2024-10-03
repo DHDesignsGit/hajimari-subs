@@ -42,11 +42,20 @@ const Auth = () => {
           {isLogin ? (
             <>
               <h2>Přihlášení</h2>
-              <Login />
             </>
           ) : (
             <div>
               <h2>Registrace</h2>
+            </div>
+          )}
+        </div>
+        <div>
+          {isLogin ? (
+            <>
+              <Login />
+            </>
+          ) : (
+            <div>
               <Register />
             </div>
           )}
