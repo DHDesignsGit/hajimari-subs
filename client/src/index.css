@@ -24,6 +24,7 @@ body {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 h1 {
@@ -42,7 +43,7 @@ h3 {
   font-weight: 900;
 }
 p {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500px;
 }
 b {

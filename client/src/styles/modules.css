@@ -7,3 +7,6 @@
     z-index: 999;
     backdrop-filter: Blur(20px);
 }
+.about-module{
+    width: 50%;
+}
